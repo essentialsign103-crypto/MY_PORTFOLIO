@@ -16,13 +16,6 @@ Next.js portfolio starter for Hamza Teha / TEHA_TECH.
 2. Start development with `npm run dev`
 3. Open `http://localhost:3000`
 
-## Update later
-
-- Replace placeholder images in `public/images`
-- Replace placeholder videos in `public/videos`
-- Update phone, email, and text in `app/page.tsx`
-- Add backend later using Next.js route handlers or a form service
-
 ## Deploy
 
 Deploy to Vercel after installing dependencies and verifying your content.
