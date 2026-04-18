@@ -96,7 +96,39 @@ export default function DashboardPage() {
         const parsed = JSON.parse(savedData);
         // Ensure projects array exists
         if (!parsed.projects) {
-          parsed.projects = data.projects;
+          parsed.projects = [
+            {
+              id: "1",
+              title: "Brand Story Edit",
+              category: "Commercial / Identity",
+              note: "Placeholder for result, reach, or audience impact.",
+              type: "image",
+              src: "/images/project-01.png",
+              alt: "Project placeholder one",
+            },
+            {
+              id: "2",
+              title: "Social campaign Cut",
+              category: "Short-Form / Social Media",
+              note: "Space reserved for future metrics and campaign details.",
+              type: "video",
+              src: "/videos/project-02-placeholder.mp4",
+              poster: "/images/project-02.png",
+            },
+            {
+              id: "3",
+              title: "YouTube Growth Edit",
+              category: "Long-Form / Creator Content",
+              note: "Ready for thumbnail, case outcome, and testimonial pairing later.",
+              type: "image",
+              src: "/images/project-03.png",
+              alt: "Project placeholder three",
+            },
+          ];
+        }
+        // Ensure inquiries array exists
+        if (!parsed.inquiries) {
+          parsed.inquiries = [];
         }
         setData(parsed);
       }
@@ -518,12 +550,12 @@ export default function DashboardPage() {
               </div>
 
               <div className="projects-list">
-                <h3>Current Projects ({data.projects.length})</h3>
-                {data.projects.length === 0 ? (
+                <h3>Current Projects ({(data.projects || []).length})</h3>
+                {(data.projects || []).length === 0 ? (
                   <p>No projects yet. Add one above.</p>
                 ) : (
                   <div className="projects-grid">
-                    {data.projects.map((project) => (
+                    {(data.projects || []).map((project) => (
                       <div key={project.id} className="project-item">
                         <div className="project-preview">
                           {project.type === "video" ? (
