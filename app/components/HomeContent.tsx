@@ -35,6 +35,8 @@ interface HomeContentProps {
 export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
   const { t } = useLanguage();
   const [feedback, setFeedback] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const [portfolioData, setPortfolioData] = useState<PortfolioData>(defaultData);
 
   useEffect(() => {
@@ -117,8 +119,10 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
         }),
       }).catch((error) => console.error("Error sending email:", error));
 
-      setFeedback(t("contact.form.success"));
-      event.currentTarget.reset();
+      // Show popup and reset form completely (including checkboxes)
+      setShowPopup(true);
+      setFormKey((prev) => prev + 1);
+      setTimeout(() => setShowPopup(false), 4000);
     } catch (error) {
       console.error("Error saving inquiry:", error);
       setFeedback("Something went wrong. Please try again.");
@@ -127,6 +131,31 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
 
   return (
     <div className="site-shell">
+
+      {/* Success Popup */}
+      {showPopup && (
+        <div style={{
+          position: "fixed",
+          top: "30px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#0F4545",
+          color: "#fff",
+          padding: "18px 36px",
+          borderRadius: "12px",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+          zIndex: 9999,
+          fontSize: "1rem",
+          fontWeight: 600,
+          letterSpacing: "0.01em",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          animation: "fadeInDown 0.3s ease",
+        }}>
+          ✅ {t("contact.form.success")}
+        </div>
+      )}
       <header className="topbar">
         <a className="brand" href="#home" aria-label="Hamza Teha home">
           <span className="brand-mark">HT</span>
@@ -442,7 +471,7 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
               </div>
             </aside>
 
-            <form className="inquiry-form reveal" id="inquiry-form" onSubmit={handleSubmit}>
+            <form className="inquiry-form reveal" id="inquiry-form" key={formKey} onSubmit={handleSubmit}>
               <div className="form-header">
                 <h3>{t("contact.form.title")}</h3>
                 <p>{t("contact.form.desc")}</p>
@@ -480,9 +509,11 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
                 <button className="button button-solid" type="submit">
                   {t("contact.form.submit")}
                 </button>
-                <p id="form-feedback" aria-live="polite">
-                  {feedback}
-                </p>
+                {feedback && (
+                  <p id="form-feedback" aria-live="polite" style={{ color: "red", marginTop: "8px" }}>
+                    {feedback}
+                  </p>
+                )}
               </div>
             </form>
           </div>
