@@ -45,6 +45,7 @@ interface PortfolioData {
   aboutText: string;
   contactEmail: string;
   contactPhone: string;
+  contactAccount: string;
   projects: Project[];
   inquiries: ClientInquiry[];
 }
@@ -59,6 +60,7 @@ export default function DashboardPage() {
     aboutText: "I'm Hamza Teha, a video editor building work that feels cinematic...",
     contactEmail: "hamzatehafeko8@gmail.com",
     contactPhone: "+251 965614501",
+    contactAccount: "@teha_creative",
     projects: [
       {
         id: "1",
@@ -438,6 +440,15 @@ export default function DashboardPage() {
                   value={data.contactPhone}
                   onChange={(e) => handleInputChange("contactPhone", e.target.value)}
                   placeholder="Enter phone"
+                />
+              </div>
+              <div className="form-group">
+                <label>Account (Telegram / Instagram / etc.)</label>
+                <input
+                  type="text"
+                  value={data.contactAccount || ""}
+                  onChange={(e) => handleInputChange("contactAccount", e.target.value)}
+                  placeholder="e.g. @teha_creative"
                 />
               </div>
             </div>

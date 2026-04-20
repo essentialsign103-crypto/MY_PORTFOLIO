@@ -25,6 +25,7 @@ interface PortfolioData {
   aboutText: string;
   contactEmail: string;
   contactPhone: string;
+  contactAccount: string;
   projects: Project[];
 }
 
@@ -409,6 +410,10 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
                 <div>
                   <span>{t("contact.phone")}</span>
                   <strong>{portfolioData.contactPhone}</strong>
+                </div>
+                <div>
+                  <span>{t("contact.account")}</span>
+                  <strong>{portfolioData.contactAccount || "@teha_creative"}</strong>
                 </div>
                 <div>
                   <span>{t("contact.email")}</span>
