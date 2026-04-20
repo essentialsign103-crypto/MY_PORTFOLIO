@@ -7,6 +7,6 @@ const ThemeToggleContent = dynamic(
   { ssr: false }
 );
 
-export function ThemeToggle() {
-  return <ThemeToggleContent />;
+export function ThemeToggle({ compact }: { compact?: boolean }) {
+  return <ThemeToggleContent compact={compact} />;
 }

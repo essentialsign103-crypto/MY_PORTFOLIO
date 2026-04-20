@@ -738,3 +738,44 @@ h3 {
     transform: none;
   }
 }
+
+/* ── Mobile Bottom Navigation ── */
+
+/* Hide bottom nav on desktop, show on mobile */
+[aria-label="Mobile navigation"],
+[aria-label="Admin mobile navigation"] {
+  display: none;
+}
+
+/* Hide top nav elements on mobile, show bottom nav */
+@media (max-width: 768px) {
+  [aria-label="Mobile navigation"],
+  [aria-label="Admin mobile navigation"] {
+    display: flex;
+  }
+
+  /* Hide top navbar nav links and theme toggle on mobile */
+  .topbar .nav,
+  .topbar .header-actions .theme-toggle-wrapper {
+    display: none;
+  }
+
+  /* Hide desktop dashboard nav on mobile */
+  .dashboard-nav {
+    display: none;
+  }
+
+  /* Add bottom padding so content isn't hidden behind bottom nav */
+  .main-with-bottom-nav {
+    padding-bottom: 80px;
+  }
+
+  .dashboard-panel {
+    padding-bottom: 80px !important;
+  }
+
+  /* Keep hire me button visible on mobile */
+  .topbar {
+    border-radius: 20px;
+  }
+}

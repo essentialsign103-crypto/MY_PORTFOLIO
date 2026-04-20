@@ -4,9 +4,28 @@ import { useState } from "react";
 import { useTheme } from "@/app/providers/ThemeProvider";
 import "./ThemeToggle.css";
 
-export function ThemeToggleContent() {
+export function ThemeToggleContent({ compact }: { compact?: boolean }) {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (compact) {
+    return (
+      <button
+        onClick={toggleTheme}
+        aria-label="Toggle theme"
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "18px",
+          padding: "2px",
+          lineHeight: 1,
+        }}
+      >
+        {theme === "light" ? "☀️" : "🌙"}
+      </button>
+    );
+  }
 
   return (
     <div className="theme-toggle-wrapper">

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageToggle } from "./LanguageToggle";
+import { MobileBottomNav } from "./MobileBottomNav";
 import { useLanguage } from "@/app/providers/LanguageProvider";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -158,7 +159,7 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
         </div>
       </header>
 
-      <main>
+      <main className="main-with-bottom-nav">
         <section className="hero section" id="home">
           <div className="hero-copy reveal">
             <p className="eyebrow">{t("hero.eyebrow")}</p>
@@ -526,6 +527,9 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
           </a>
         </div>
       </footer>
+
+      {/* Mobile bottom navigation - only visible on mobile */}
+      <MobileBottomNav />
     </div>
   );
 }

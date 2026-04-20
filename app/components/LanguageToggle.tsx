@@ -7,6 +7,6 @@ const LanguageToggleContent = dynamic(
   { ssr: false }
 );
 
-export function LanguageToggle() {
-  return <LanguageToggleContent />;
+export function LanguageToggle({ compact }: { compact?: boolean }) {
+  return <LanguageToggleContent compact={compact} />;
 }

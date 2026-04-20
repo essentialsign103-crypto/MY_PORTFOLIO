@@ -12,6 +12,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import { AdminMobileNav } from "@/app/components/AdminMobileNav";
 import "./dashboard.css";
 
 interface Project {
@@ -378,7 +379,7 @@ export default function DashboardPage() {
           </button>
         </nav>
 
-        <div className="dashboard-panel">
+        <div className="dashboard-panel" style={{ paddingBottom: "80px" }}>
           {activeTab === "hero" && (
             <div className="edit-section">
               <h2>Edit Hero Section</h2>
@@ -677,6 +678,13 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
+
+      {/* Mobile bottom navigation for admin */}
+      <AdminMobileNav
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        unreadCount={data.inquiries?.filter((i) => !i.isRead).length || 0}
+      />
     </div>
   );
 }

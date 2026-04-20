@@ -4,9 +4,28 @@ import { useState } from "react";
 import { useLanguage } from "@/app/providers/LanguageProvider";
 import "./LanguageToggle.css";
 
-export function LanguageToggleContent() {
+export function LanguageToggleContent({ compact }: { compact?: boolean }) {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (compact) {
+    return (
+      <button
+        onClick={() => setLanguage(language === "en" ? "om" : "en")}
+        aria-label="Toggle language"
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "18px",
+          padding: "2px",
+          lineHeight: 1,
+        }}
+      >
+        🌍
+      </button>
+    );
+  }
 
   return (
     <div className="language-toggle-wrapper">
