@@ -26,3 +26,7 @@ pnpm-debug.log*
 
 # typescript
 *.tsbuildinfo
+
+# PWA generated files (Vercel generates these during build)
+public/sw.js
+public/workbox-*.js
