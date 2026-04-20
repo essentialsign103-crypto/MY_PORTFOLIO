@@ -42,21 +42,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile navigation"
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-around",
-        padding: "10px 8px calc(10px + env(safe-area-inset-bottom))",
-        background: "rgba(245, 241, 232, 0.92)",
-        backdropFilter: "blur(20px)",
-        borderTop: "1px solid rgba(15, 69, 69, 0.12)",
-        boxShadow: "0 -8px 32px rgba(15, 69, 69, 0.08)",
-      }}
+      className="mobile-bottom-nav"
     >
       {navItems.map(({ key, href, icon: Icon, labelKey }) => {
         const isActive = active === key;

@@ -20,20 +20,7 @@ export function AdminMobileNav({ activeTab, onTabChange, unreadCount }: AdminMob
   return (
     <nav
       aria-label="Admin mobile navigation"
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-around",
-        padding: "10px 4px calc(10px + env(safe-area-inset-bottom))",
-        background: "#0f4545",
-        borderTop: "1px solid rgba(255,255,255,0.1)",
-        boxShadow: "0 -8px 32px rgba(0,0,0,0.2)",
-      }}
+      className="admin-mobile-nav"
     >
       {adminTabs.map(({ key, icon: Icon, label }) => {
         const isActive = activeTab === key;

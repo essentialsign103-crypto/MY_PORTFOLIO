@@ -741,16 +741,38 @@ h3 {
 
 /* ── Mobile Bottom Navigation ── */
 
-/* Hide bottom nav on desktop, show on mobile */
-[aria-label="Mobile navigation"],
-[aria-label="Admin mobile navigation"] {
+/* Hide bottom nav on desktop */
+.mobile-bottom-nav,
+.admin-mobile-nav {
   display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: space-around;
 }
 
-/* Hide top nav elements on mobile, show bottom nav */
+.mobile-bottom-nav {
+  padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(245, 241, 232, 0.92);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(15, 69, 69, 0.12);
+  box-shadow: 0 -8px 32px rgba(15, 69, 69, 0.08);
+}
+
+.admin-mobile-nav {
+  padding: 10px 4px calc(10px + env(safe-area-inset-bottom));
+  background: #0f4545;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Show bottom nav ONLY on mobile */
 @media (max-width: 768px) {
-  [aria-label="Mobile navigation"],
-  [aria-label="Admin mobile navigation"] {
+  .mobile-bottom-nav,
+  .admin-mobile-nav {
     display: flex;
   }
 
