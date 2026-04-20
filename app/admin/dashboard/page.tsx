@@ -2,6 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import "./dashboard.css";
 
 interface Project {
@@ -94,7 +104,6 @@ export default function DashboardPage() {
       const savedData = localStorage.getItem("portfolioData");
       if (savedData) {
         const parsed = JSON.parse(savedData);
-        // Ensure projects array exists
         if (!parsed.projects) {
           parsed.projects = [
             {
@@ -126,7 +135,6 @@ export default function DashboardPage() {
             },
           ];
         }
-        // Ensure inquiries array exists
         if (!parsed.inquiries) {
           parsed.inquiries = [];
         }
@@ -134,6 +142,20 @@ export default function DashboardPage() {
       }
     }
   }, [router]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load inquiries from Firebase in real-time
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const inquiries: ClientInquiry[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<ClientInquiry, "id">),
+      }));
+      setData((prev) => ({ ...prev, inquiries }));
+    });
+    return () => unsubscribe();
+  }, [isAuthenticated]);
 
   function handleLogout() {
     localStorage.removeItem("adminAuth");
@@ -258,28 +280,15 @@ export default function DashboardPage() {
   }
 
   function handleMarkAsRead(inquiryId: string) {
-    setData((prev) => ({
-      ...prev,
-      inquiries: prev.inquiries.map((inq) =>
-        inq.id === inquiryId ? { ...inq, isRead: true } : inq
-      ),
-    }));
+    updateDoc(doc(db, "inquiries", inquiryId), { isRead: true }).catch(console.error);
   }
 
   function handleMarkAsUnread(inquiryId: string) {
-    setData((prev) => ({
-      ...prev,
-      inquiries: prev.inquiries.map((inq) =>
-        inq.id === inquiryId ? { ...inq, isRead: false } : inq
-      ),
-    }));
+    updateDoc(doc(db, "inquiries", inquiryId), { isRead: false }).catch(console.error);
   }
 
   function handleDeleteInquiry(inquiryId: string) {
-    setData((prev) => ({
-      ...prev,
-      inquiries: prev.inquiries.filter((inq) => inq.id !== inquiryId),
-    }));
+    deleteDoc(doc(db, "inquiries", inquiryId)).catch(console.error);
   }
 
   async function handleSendReply(inquiryId: string, reply: string) {
@@ -289,7 +298,6 @@ export default function DashboardPage() {
     }
 
     try {
-      // Send email to client
       const inquiry = data.inquiries.find((inq) => inq.id === inquiryId);
       if (!inquiry) return;
 
@@ -309,15 +317,12 @@ export default function DashboardPage() {
         throw new Error("Failed to send email");
       }
 
-      // Update inquiry with reply
-      setData((prev) => ({
-        ...prev,
-        inquiries: prev.inquiries.map((inq) =>
-          inq.id === inquiryId
-            ? { ...inq, adminReply: reply, replyDate: Date.now(), isRead: true }
-            : inq
-        ),
-      }));
+      // Update inquiry in Firebase with reply
+      await updateDoc(doc(db, "inquiries", inquiryId), {
+        adminReply: reply,
+        replyDate: Date.now(),
+        isRead: true,
+      });
 
       alert("Reply sent successfully!");
     } catch (error) {

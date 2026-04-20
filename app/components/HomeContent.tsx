@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/app/providers/LanguageProvider";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 interface Project {
   id: string;
@@ -73,7 +75,7 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
     return () => observer.disconnect();
   }, []);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -89,7 +91,6 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
     }
 
     const inquiry = {
-      id: Date.now().toString(),
       clientName,
       clientPhone,
       clientEmail,
@@ -99,27 +100,29 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
       createdAt: Date.now(),
     };
 
-    const currentData = JSON.parse(localStorage.getItem("portfolioData") || "{}");
-    if (!currentData.inquiries) {
-      currentData.inquiries = [];
+    try {
+      // Save to Firebase Firestore
+      await addDoc(collection(db, "inquiries"), inquiry);
+
+      // Also send email notification
+      fetch("/api/send-client-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName,
+          clientPhone,
+          clientEmail,
+          services: selectedServices,
+          projectBrief,
+        }),
+      }).catch((error) => console.error("Error sending email:", error));
+
+      setFeedback(t("contact.form.success"));
+      event.currentTarget.reset();
+    } catch (error) {
+      console.error("Error saving inquiry:", error);
+      setFeedback("Something went wrong. Please try again.");
     }
-    currentData.inquiries.push(inquiry);
-    localStorage.setItem("portfolioData", JSON.stringify(currentData));
-
-    fetch("/api/send-client-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        clientName,
-        clientPhone,
-        clientEmail,
-        services: selectedServices,
-        projectBrief,
-      }),
-    }).catch((error) => console.error("Error sending email:", error));
-
-    setFeedback(t("contact.form.success"));
-    event.currentTarget.reset();
   }
 
   return (
