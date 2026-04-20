@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope, Quicksand } from "next/font/google";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { LanguageProvider } from "./providers/LanguageProvider";
+import { InstallPrompt } from "./components/InstallPrompt";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -27,6 +28,15 @@ export const metadata: Metadata = {
     "Hamza Teha is a professional video editor crafting cinematic, premium visual stories for brands, creators, and businesses.",
   icons: {
     icon: "/favicon.ico",
+    apple: "/icons/icon-192x192.png",
+  },
+  manifest: "/manifest.json",
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "Hamza Teha",
+    "theme-color": "#0F4545",
   },
 };
 
@@ -39,7 +49,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${manrope.variable} ${cormorant.variable} ${quicksand.variable}`}>
         <ThemeProvider>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>
+            {children}
+            <InstallPrompt />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
