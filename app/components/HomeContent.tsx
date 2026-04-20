@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/app/providers/LanguageProvider";
@@ -36,6 +36,7 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
   const { t } = useLanguage();
   const [feedback, setFeedback] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const [portfolioData, setPortfolioData] = useState<PortfolioData>(defaultData);
 
   useEffect(() => {
@@ -91,6 +92,9 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
       return;
     }
 
+    // Clear any previous error
+    setFeedback("");
+
     const inquiry = {
       clientName,
       clientPhone,
@@ -118,10 +122,11 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
         }),
       }).catch((error) => console.error("Error sending email:", error));
 
-      // Show popup below button, reset all fields, auto-hide after 4 seconds
+      // Show popup below button, reset all fields, auto-hide after 5 seconds
       setShowPopup(true);
-      event.currentTarget.reset();
-      setTimeout(() => setShowPopup(false), 4000);
+      setFeedback("");
+      if (formRef.current) formRef.current.reset();
+      setTimeout(() => setShowPopup(false), 5000);
     } catch (error) {
       console.error("Error saving inquiry:", error);
       setFeedback("Something went wrong. Please try again.");
@@ -445,7 +450,7 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
               </div>
             </aside>
 
-            <form className="inquiry-form reveal" id="inquiry-form" onSubmit={handleSubmit}>
+            <form className="inquiry-form reveal" id="inquiry-form" ref={formRef} onSubmit={handleSubmit}>
               <div className="form-header">
                 <h3>{t("contact.form.title")}</h3>
                 <p>{t("contact.form.desc")}</p>
@@ -484,14 +489,14 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
                   {t("contact.form.submit")}
                 </button>
                 {feedback && (
-                  <p id="form-feedback" aria-live="polite" style={{ color: "red", marginTop: "8px" }}>
+                  <p aria-live="polite" style={{ color: "red", marginTop: "8px", fontSize: "0.9rem" }}>
                     {feedback}
                   </p>
                 )}
                 {showPopup && (
                   <p aria-live="polite" style={{
                     marginTop: "14px",
-                    fontFamily: "'Quicksand', sans-serif",
+                    fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
                     fontWeight: 700,
                     fontSize: "1rem",
                     color: "#05F244",
