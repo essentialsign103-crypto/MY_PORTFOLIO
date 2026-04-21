@@ -25,7 +25,7 @@ interface PortfolioData {
   aboutText: string;
   contactEmail: string;
   contactPhone: string;
-  contactAccount?: string;
+  contactAccount?: string; // optional - Telegram, Instagram, etc.
   projects: Project[];
 }
 
