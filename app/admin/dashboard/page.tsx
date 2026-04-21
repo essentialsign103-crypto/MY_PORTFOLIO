@@ -45,7 +45,7 @@ interface PortfolioData {
   aboutText: string;
   contactEmail: string;
   contactPhone: string;
-  contactAccount: string;
+  contactAccount?: string;
   projects: Project[];
   inquiries: ClientInquiry[];
 }
