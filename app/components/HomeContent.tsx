@@ -412,12 +412,12 @@ export function HomeContent({ serviceOptions, defaultData }: HomeContentProps) {
                   <strong>{portfolioData.contactPhone}</strong>
                 </div>
                 <div>
-                  <span>{t("contact.account")}</span>
-                  <strong>{portfolioData.contactAccount || "@teha_creative"}</strong>
+                  <span>{t("contact.email")}</span>
+                  <strong>{portfolioData.contactEmail }</strong>
                 </div>
                 <div>
-                  <span>{t("contact.email")}</span>
-                  <strong>{portfolioData.contactEmail}</strong>
+                  <span>{t("contact.account")}</span>
+                  <strong>{portfolioData.contactAccount  || "CBE" }</strong>
                 </div>
                 <div>
                   <span>{t("contact.brand")}</span>

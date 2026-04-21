@@ -24,6 +24,7 @@ interface PortfolioData {
   aboutText: string;
   contactEmail: string;
   contactPhone: string;
+  contactAccount: string;
   projects: Project[];
 }
 
@@ -33,6 +34,7 @@ const defaultData: PortfolioData = {
   aboutText: "I'm Hamza Teha, a video editor building work that feels cinematic, focused, and valuable. My approach combines creative instinct with strong technical execution so every cut, transition, and pacing choice supports the message.",
   contactEmail: "hamzatehafeko8@gmail.com",
   contactPhone: "+251 965614501",
+  contactAccount: "@teha_creative",
   projects: [
     {
       id: "1",
